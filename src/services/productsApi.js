@@ -11,6 +11,16 @@ export async function fetchProducts() {
   return data.products ?? [];
 }
 
+export async function fetchProductById(productId) {
+  const response = await fetch(`${BASE_URL}/${productId}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch product");
+  }
+
+  return await response.json();
+}
+
 export async function updateProduct(productId, updates) {
   const response = await fetch(`${BASE_URL}/${productId}`, {
     method: "PATCH",
@@ -24,7 +34,7 @@ export async function updateProduct(productId, updates) {
     throw new Error("Failed to update product");
   }
 
-  return response.json();
+  return await response.json();
 }
 
 export async function deleteProduct(productId) {

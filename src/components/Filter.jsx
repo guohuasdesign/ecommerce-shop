@@ -1,41 +1,31 @@
 import React from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 const Filter = ({
   categories,
   selectedCategory,
   onCategoryChange,
-  inHeader = false,
+  selectedSort,
+  onSortChange,
 }) => {
+  const { t } = useLanguage();
+
   return (
-    <div
-      className={
-        inHeader
-          ? "rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-sm"
-          : "flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 p-4 bg-white border border-gray-200 rounded-xl shadow-sm"
-      }
-    >
-      <div className={inHeader ? "" : "flex-1"}>
+    <div className="grid gap-4 sm:grid-cols-2">
+      <div className="flex-1">
         <label
           htmlFor="category-filter"
-          className={
-            inHeader
-              ? "block text-sm font-medium text-gray-200 mb-2"
-              : "block text-sm font-medium text-gray-700 mb-2"
-          }
+          className="mb-2 block text-sm font-semibold text-orange-900"
         >
-          Filter by category
+          {t("filterCategory")}
         </label>
         <select
           id="category-filter"
           value={selectedCategory}
           onChange={(event) => onCategoryChange(event.target.value)}
-          className={
-            inHeader
-              ? "w-full rounded-lg border border-white/15 bg-gray-900/40 py-2.5 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-              : "w-full border border-gray-300 rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
-          }
+          className="w-full rounded-xl border border-orange-200 bg-white py-2.5 px-4 shadow-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-400/60"
         >
-          <option value="">All categories</option>
+          <option value="">{t("allCategories")}</option>
           {categories.map((category) => (
             <option key={category} value={category}>
               {category}
@@ -43,13 +33,27 @@ const Filter = ({
           ))}
         </select>
       </div>
-      {!inHeader && (
-        <div className="text-sm text-gray-500">
-          {selectedCategory
-            ? `Current: ${selectedCategory}`
-            : "Showing all products"}
-        </div>
-      )}
+
+      <div className="flex-1">
+        <label
+          htmlFor="sort-filter"
+          className="mb-2 block text-sm font-semibold text-orange-900"
+        >
+          {t("sortBy")}
+        </label>
+        <select
+          id="sort-filter"
+          value={selectedSort}
+          onChange={(event) => onSortChange(event.target.value)}
+          className="w-full rounded-xl border border-orange-200 bg-white py-2.5 px-4 shadow-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-400/60"
+        >
+          <option value="default">{t("sortDefault")}</option>
+          <option value="price-asc">{t("sortPriceAsc")}</option>
+          <option value="price-desc">{t("sortPriceDesc")}</option>
+          <option value="rating-asc">{t("sortRatingAsc")}</option>
+          <option value="rating-desc">{t("sortRatingDesc")}</option>
+        </select>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 const Cart = ({
   cartItems,
@@ -8,6 +9,8 @@ const Cart = ({
   onIncreaseQuantity,
   onDecreaseQuantity,
 }) => {
+  const { t } = useLanguage();
+
   if (!isOpen) {
     return null;
   }
@@ -19,14 +22,22 @@ const Cart = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 px-4 py-8">
-      <div className="max-w-xl ml-auto bg-white rounded-2xl shadow-2xl p-6">
+      <div
+        id="cart-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-title"
+        className="max-w-xl ml-auto bg-white rounded-2xl shadow-2xl p-6"
+      >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Your Cart</h2>
+            <h2 id="cart-title" className="text-2xl font-bold text-gray-900">
+              {t("cartTitle")}
+            </h2>
             <p className="text-sm text-gray-500">
               {cartItems.length === 0
-                ? "No products added yet."
-                : `${cartItems.length} product types in cart`}
+                ? t("cartEmptyShort")
+                : t("cartTypes", { count: cartItems.length })}
             </p>
           </div>
           <button
@@ -34,12 +45,12 @@ const Cart = ({
             className="text-sm font-medium text-gray-500 hover:text-gray-800"
             onClick={onClose}
           >
-            Close
+            {t("close")}
           </button>
         </div>
 
         {cartItems.length === 0 ? (
-          <p className="text-gray-600">Your cart is empty.</p>
+          <p className="text-gray-600">{t("cartEmpty")}</p>
         ) : (
           <div className="space-y-4">
             {cartItems.map((item) => (
@@ -50,7 +61,7 @@ const Cart = ({
                 <div>
                   <h3 className="font-semibold text-gray-900">{item.title}</h3>
                   <p className="text-sm text-gray-500">
-                    ${item.price.toFixed(2)} each
+                    {t("eachPrice", { price: item.price.toFixed(2) })}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -78,14 +89,14 @@ const Cart = ({
                     className="text-sm font-medium text-red-600 hover:text-red-700"
                     onClick={() => onRemoveItem(item.id)}
                   >
-                    Remove
+                    {t("remove")}
                   </button>
                 </div>
               </div>
             ))}
 
             <div className="pt-4 border-t border-gray-200 flex items-center justify-between">
-              <span className="text-lg font-semibold text-gray-900">Total</span>
+              <span className="text-lg font-semibold text-gray-900">{t("total")}</span>
               <span className="text-xl font-bold text-gray-900">
                 ${totalPrice.toFixed(2)}
               </span>

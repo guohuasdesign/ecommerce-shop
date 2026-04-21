@@ -1,12 +1,22 @@
 import React from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 const SearchBar = ({ searchTerm, onSearchChange }) => {
+  const { t } = useLanguage();
+
   return (
-    <div className="relative">
+    <div className="flex flex-col">
+      <label
+        htmlFor="product-search"
+        className="mb-2 text-sm font-semibold text-orange-900"
+      >
+        {t("searchLabel")}
+      </label>
       <input
+        id="product-search"
         type="text"
-        placeholder="Search products..."
-        className="border border-gray-300 rounded-lg py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-600"
+        placeholder={t("searchPlaceholder")}
+        className="w-full rounded-xl border border-orange-200 bg-white py-2.5 px-4 shadow-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-400/60"
         value={searchTerm}
         onChange={(event) => onSearchChange(event.target.value)}
       />
